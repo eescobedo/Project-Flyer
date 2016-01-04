@@ -11,10 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-//    return view('welcome');
-    return view('pages.home');
-});
+//Route::get('/', function () {
+////    return view('welcome');
+//    return view('pages.home');
+//});
+//
+//Route::resource('flyers', 'FlyersController');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +32,12 @@ Route::get('/', function () {
 
 Route::group(['middleware' => ['web']], function () {
     //
+    Route::get('/', function () {
+//    return view('welcome');
+        echo 'entrando'; 
+        return view('pages.home');
+    });
+
+    Route::resource('flyers', 'FlyersController');
+
 });
