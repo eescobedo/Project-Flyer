@@ -34,7 +34,7 @@ Route::group(['middleware' => ['web']], function () {
     //
     Route::get('/', function () {
 //    return view('welcome');
-        echo 'entrando'; 
+//        echo 'entrando';
         return view('pages.home');
     });
 
