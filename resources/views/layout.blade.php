@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <title>Project Flyer</title>
     <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/libs.css">
 </head>
 <body>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -28,8 +30,21 @@
     </div>
 </nav>
 
-    <div class="container">
-        @yield('content')
-    </div>
+<div class="container">
+    @yield('content')
+</div>
+
+<script src="/js/libs.js"></script>
+
+@include ('flash')
+<script type="text/javascript">
+//    swal({
+//        title: "Error!",
+//        text: "Here's my error message!",
+//        type: "error",
+//        confirmButtonText: "Cool"
+//    });
+</script>
+
 </body>
 </html>
