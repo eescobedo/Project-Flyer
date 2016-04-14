@@ -25,7 +25,7 @@ class FlyersController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage..gitignore
      *
      *
      * @param FlyerRequest $request
@@ -47,6 +47,19 @@ class FlyersController extends Controller
         // redirect to landing page
         //temporary
         return redirect()->back();
+    }
 
+
+    /**
+     * Display the specified resource.
+     *
+     * @param $zip
+     * @param $street
+     */
+    public function show($zip, $street)
+    {
+        $flyer = Flyer::locatedAt ($zip, $street)->first();
+
+        return view('flyers.show', compact('flyer'));
     }
 }

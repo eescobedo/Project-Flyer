@@ -18,6 +18,30 @@ class Flyer extends Model
         'description'
     ];
 
+
+    /**
+     * Scope query to those located at a given address.
+     *
+     * @param Builder $query
+     * @param string $zip
+     * @param string $street
+     *
+     * @return Builder
+     */
+    public function scopeLocatedAt($query, $zip, $street)
+    {
+        $street = str_replace('-', ' ', $street);
+
+        return $query->where(compact('zip', 'street'))->first();
+    }
+
+
+    public function getPriceAttribute($price)
+    {
+        return '$' . number_format($price);
+    }
+
+
     /**
      * A flyer is composed of many photos
      *
