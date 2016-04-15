@@ -39,5 +39,7 @@ Route::group(['middleware' => ['web']], function () {
     });
 
     Route::resource('flyers', 'FlyersController');
+    Route::get('{zip}/{street}', 'FlyersController@show');
+
 
 });
