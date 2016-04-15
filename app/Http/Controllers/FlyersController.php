@@ -49,6 +49,11 @@ class FlyersController extends Controller
         return redirect()->back();
     }
 
+    public function addPhoto()
+    {
+        return 'Working on it';
+    }
+
 
     /**
      * Display the specified resource.
