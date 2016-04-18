@@ -14,6 +14,14 @@ use App\Http\Controllers\Controller;
 
 class FlyersController extends Controller
 {
+    /**
+     * FlyersController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
