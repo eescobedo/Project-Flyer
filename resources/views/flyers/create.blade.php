@@ -5,23 +5,19 @@
 
     <hr>
 
-    <div class="row">
-        <form method="post" action="/flyers" enctype="multipart/form-data" class="col-md-6">
-            @include('flyers.form')
+    <form method="post" action="/flyers" enctype="multipart/form-data">
+        @include('flyers.form')
 
-            {{--@if (isset($errors))--}}
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-            {{--@endif--}}
+        @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-        </form>
-    </div>
+    </form>
 
 @stop
