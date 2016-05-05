@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Http\Controllers;
+<?php namespace App\Http\Controllers;
 
 //use App\Http\Requests\FlyerRequest;
 use App\Flyer;
@@ -11,6 +9,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\UploadedFile;
 
 class FlyersController extends Controller
 {
@@ -19,7 +18,9 @@ class FlyersController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // Realiza la validación que el usuario este logueado en para usar este controlador,
+        // con except, se le indica que no haga esa validacion en el metodo show
+        $this->middleware('auth', ['except' => ['show']]);
     }
 
 
@@ -70,11 +71,18 @@ class FlyersController extends Controller
             'photo' => 'required|mimes:jpg,jpeg,png,bmp'
         ]);
 
-        $photo = Photo::fromForm($request->file('photo'));
+        $photo = $this->makePhoto($request->file('photo'));
 
         $flyer = Flyer::locatedAt($zip, $street)->addPhoto($photo);
 
 //        return 'done';
+    }
+
+    public function makePhoto(UploadedFile $file)
+    {
+//        return Photo::fromForm($file)->store($file);
+        return Photo::named($file->getClientOriginalName())
+            ->move($file);
     }
 
     /**
