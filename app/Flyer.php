@@ -15,7 +15,8 @@ class Flyer extends Model
         'country',
         'zip',
         'price',
-        'description'
+        'description',
+        'user_id'
     ];
 
 
@@ -31,10 +32,8 @@ class Flyer extends Model
     {
         $street = str_replace('-', ' ', $street);
 
-//        return $query->where(compact('zip', 'street'))->first();
-        return static::where(compact('zip', 'street'))->first();
+        return static::where(compact('zip', 'street'))->firstOrFail();
     }
-
 
     public function getPriceAttribute($price)
     {
@@ -55,5 +54,26 @@ class Flyer extends Model
     public function photos()
     {
         return $this->hasMany('App\Photo');
+    }
+
+
+    /**
+     * A flyer is owned by a user
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function owner()
+    {
+        return $this->belongsTo('App\User', 'user_id');
+    }
+
+    /**
+     * Determine if the given user created the flyer.
+     * @param User $user
+     *
+     * @return boolean
+     */
+    public function ownedBy(User $user)
+    {
+        return $this->user_id == $user->id;
     }
 }

@@ -1,25 +1,23 @@
-<?php
+<?php namespace App\Http\Controllers;
 
-namespace App\Http\Controllers;
-
-//use App\Http\Requests\FlyerRequest;
 use App\Flyer;
-use App\Http\Flash;
-use App\Http\Requests\FlyerRequest;
 use App\Photo;
-use Illuminate\Http\Request;
-
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use App\Http\Requests\FlyerRequest;
+use App\Http\Requests\AddPhotoRequest;
 
 class FlyersController extends Controller
 {
     /**
-     * FlyersController constructor.
+     * Create a new FlyersController instance.
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // Realiza la validación que el usuario este logueado en para usar este controlador,
+        // con except, se le indica que no haga esa validacion en el metodo show
+        $this->middleware('auth', ['except' => ['show']]);
+
+        parent::__construct();
     }
 
 
@@ -28,8 +26,6 @@ class FlyersController extends Controller
      */
     public function create()
     {
-        //flash()->success('Hello World', 'The is the message.');
-        //flash()->overlay('Welcome aboard', 'Thank you for signing up.');
         return view('flyers.create');
     }
 
@@ -38,19 +34,13 @@ class FlyersController extends Controller
      *
      *
      * @param FlyerRequest $request
+     *
      * @return \Response
      */
     public function store(FlyerRequest $request)
     {
-        // validate the form
-        // $this->validate(); Lo realiza el request
-        // persist the flyer
         Flyer::create($request->all());
 
-        // flash messaging
-        //session()->flash('flash_message', 'Flyer successfully created!');
-
-        //flash('Success!', 'Your flyer has been created!', 'success');
         flash()->success('Success!', 'Your flyer has been created!');
 
         // redirect to landing page
@@ -59,22 +49,18 @@ class FlyersController extends Controller
 
     /**
      * Apply a photo to the referenced flyer.
+     *
      * @param string $zip
      * @param string $street
-     * @param Request $request
+     * @param AddPhotoRequest $request
+     *
      * @return string
      */
-    public function addPhoto($zip, $street, Request $request)
+    public function addPhoto($zip, $street, AddPhotoRequest $request)
     {
-        $this->validate($request, [
-            'photo' => 'required|mimes:jpg,jpeg,png,bmp'
-        ]);
+        $photo = Photo::fromFile($request->file('photo'));
 
-        $photo = Photo::fromForm($request->file('photo'));
-
-        $flyer = Flyer::locatedAt($zip, $street)->addPhoto($photo);
-
-//        return 'done';
+        Flyer::locatedAt($zip, $street)->addPhoto($photo);
     }
 
     /**
@@ -82,6 +68,7 @@ class FlyersController extends Controller
      *
      * @param $zip
      * @param $street
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show($zip, $street)
     {
