@@ -2,7 +2,7 @@
 
 use App\Flyer;
 
-class ChangeFlyerRequest extends Request
+class AddPhotoRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.

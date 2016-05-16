@@ -15,7 +15,8 @@ class Flyer extends Model
         'country',
         'zip',
         'price',
-        'description'
+        'description',
+        'user_id'
     ];
 
 

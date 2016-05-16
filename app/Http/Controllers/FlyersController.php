@@ -1,17 +1,15 @@
 <?php namespace App\Http\Controllers;
 
 use App\Flyer;
-use App\Http\Requests\ChangeFlyerRequest;
 use App\Photo;
 use App\Http\Requests;
 use App\Http\Requests\FlyerRequest;
-//use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
+use App\Http\Requests\AddPhotoRequest;
 
 class FlyersController extends Controller
 {
     /**
-     * FlyersController constructor.
+     * Create a new FlyersController instance.
      */
     public function __construct()
     {
@@ -41,12 +39,8 @@ class FlyersController extends Controller
      */
     public function store(FlyerRequest $request)
     {
-        // validate the form
-        // $this->validate(); Lo realiza el request
-        // persist the flyer
         Flyer::create($request->all());
 
-        // flash messaging
         flash()->success('Success!', 'Your flyer has been created!');
 
         // redirect to landing page
@@ -56,23 +50,17 @@ class FlyersController extends Controller
     /**
      * Apply a photo to the referenced flyer.
      *
-     * @param string             $zip
-     * @param string             $street
-     * @param ChangeFlyerRequest $request
+     * @param string $zip
+     * @param string $street
+     * @param AddPhotoRequest $request
      *
      * @return string
      */
-    public function addPhoto($zip, $street, ChangeFlyerRequest $request)
+    public function addPhoto($zip, $street, AddPhotoRequest $request)
     {
-        $photo = $this->makePhoto($request->file('photo'));
+        $photo = Photo::fromFile($request->file('photo'));
 
         Flyer::locatedAt($zip, $street)->addPhoto($photo);
-    }
-
-    public function makePhoto(UploadedFile $file)
-    {
-        return Photo::named($file->getClientOriginalName())
-            ->move($file);
     }
 
     /**
@@ -80,6 +68,7 @@ class FlyersController extends Controller
      *
      * @param $zip
      * @param $street
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show($zip, $street)
     {
