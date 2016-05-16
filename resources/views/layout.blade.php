@@ -5,10 +5,11 @@
     <title>Project Flyer</title>
     <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" href="/css/libs.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/dropzone.css">
 </head>
 <body>
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -26,6 +27,12 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
+
+            @if ($signedIn)
+                <p class="navbar-text navbar-right">
+                    Hello, {{ $user->name }}
+                </p>
+            @endif
         </div><!--/.nav-collapse -->
     </div>
 </nav>
@@ -35,6 +42,8 @@
 </div>
 
 <script src="/js/libs.js"></script>
+
+@yield('scripts.footer')
 
 @include ('flash')
 <script type="text/javascript">
