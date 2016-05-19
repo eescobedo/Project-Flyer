@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+
 use App\Flyer;
 use App\Http\Requests\AddPhotoRequest;
 use App\Photo;
