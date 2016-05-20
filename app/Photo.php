@@ -1,5 +1,6 @@
 <?php namespace App;
 
+use Illuminate\Support\Facades\File;
 use Image;
 use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -21,12 +22,12 @@ class Photo extends Model
 
     protected $file;
 
-    protected static function boot()
-    {
-        static::creating(function ($photo) {
-            return $photo->upload();
-        });
-    }
+//    protected static function boot()
+//    {
+//        static::creating(function ($photo) {
+//            return $photo->upload();
+//        });
+//    }
 
     /**
      * A photo belongs to a flyer
@@ -37,24 +38,24 @@ class Photo extends Model
         return $this->belongsTo('App\Flyer');
     }
 
-    /**
-     * Make a new photo instance from an uploaded file
-     *
-     * @param UploadedFile $file
-     * @return self
-     */
-    public static function fromFile(UploadedFile $file)
-    {
-        $photo = new static;
-
-        $photo->file = $file;
-
-        return $photo->fill([
-            'name' => $photo->fileName(),
-            'path' => $photo->filePath(),
-            'thumbnail_path' => $photo->thumbnailPath()
-        ]);
-    }
+//    /**
+//     * Make a new photo instance from an uploaded file
+//     *
+//     * @param UploadedFile $file
+//     * @return self
+//     */
+//    public static function fromFile(UploadedFile $file)
+//    {
+//        $photo = new static;
+//
+//        $photo->file = $file;
+//
+////        return $photo->fill([
+////            'name' => $photo->fileName(),
+////            'path' => $photo->filePath(),
+////            'thumbnail_path' => $photo->thumbnailPath()
+////        ]);
+//    }
 
     /**
      * Get the file name for the photo
@@ -72,25 +73,34 @@ class Photo extends Model
         return "{$name}.{$extension}";
     }
 
-    /**
-     * Get the path to the photo.
-     *
-     * @return string
-     */
-    public function filePath()
+    public function setNameAttribute($name)
     {
-        return $this->baseDir() . '/' . $this->fileName();
+        $this->attributes['name'] = $name; // $photo->name = 'new.jpg'
+
+        $this->path = $this->baseDir() .'/' . $name;
+        $this->thumbnail_path = $this->baseDir() .'/tn-' . $name;
     }
 
-    /**
-     * Get the path to the photo's thumbnail.
-     *
-     * @return string
-     */
-    public function thumbnailPath()
-    {
-        return $this->baseDir() . '/tn-' . $this->fileName();
-    }
+
+//    /**
+//     * Get the path to the photo.
+//     *
+//     * @return string
+//     */
+//    public function filePath()
+//    {
+//        return $this->baseDir() . '/' . $this->fileName();
+//    }
+//
+//    /**
+//     * Get the path to the photo's thumbnail.
+//     *
+//     * @return string
+//     */
+//    public function thumbnailPath()
+//    {
+//        return $this->baseDir() . '/tn-' . $this->fileName();
+//    }
 
     /**
      * Get the base directory for photo uploads
@@ -110,7 +120,7 @@ class Photo extends Model
      */
     public function upload()
     {
-        $this->file->move($this->baseDir(), $this->fileName());
+//        $this->file->move($this->baseDir(), $this->fileName());
 
         $this->makeThumbnail();
 
@@ -118,16 +128,27 @@ class Photo extends Model
 
     }
 
-    /**
-     * Create a thumbnail for the photo.
-     *
-     * @return void
-     */
-    protected function makeThumbnail()
-    {
-        Image::make($this->filePath())
-            ->fit(200)
-            ->save($this->thumbnailPath());
 
+    public function delete()
+    {
+        File::delete([
+            $this->path,
+            $this->thumbnail_path
+        ]);
+
+        parent::delete();
     }
+
+//    /**
+//     * Create a thumbnail for the photo.
+//     *
+//     * @return void
+//     */
+//    protected function makeThumbnail()
+//    {
+//        Image::make($this->filePath())
+//            ->fit(200)
+//            ->save($this->thumbnailPath());
+//
+//    }
 }

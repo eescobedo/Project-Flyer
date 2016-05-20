@@ -8,7 +8,7 @@ class User extends Authenticatable
 {
 
     protected $table = 'users';
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -26,5 +26,15 @@ class User extends Authenticatable
     public function owns($relation)
     {
         return $relation->user_id == $this->id;
+    }
+
+    public function flyers()
+    {
+        return $this->hasMany(Flyer::class);
+    }
+
+    public function publish(Flyer $flyer)
+    {
+        return $this->flyers()->save($flyer);
     }
 }
