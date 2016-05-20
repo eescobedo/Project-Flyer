@@ -1,5 +1,6 @@
 <?php namespace App;
 
+use Illuminate\Support\Facades\File;
 use Image;
 use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -125,6 +126,17 @@ class Photo extends Model
 
         return $this;
 
+    }
+
+
+    public function delete()
+    {
+        File::delete([
+            $this->path,
+            $this->thumbnail_path
+        ]);
+
+        parent::delete();
     }
 
 //    /**

@@ -55,7 +55,7 @@ class AddPhotoToFlyer
         return new Photo(['name' => $this->makeFileName()]);
     }
 
-    protected function makeFileName()
+    public function makeFileName()
     {
         $name = sha1(
             time() . $this->file->getClientOriginalName()
