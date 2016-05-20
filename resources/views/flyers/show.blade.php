@@ -4,8 +4,8 @@
 
     <div class="row">
         <div class="col-md-4">
-            <h1>{!!  $flyer->street !!}</h1>
-            <h2>{!! $flyer->price !!}</h2>
+            <h1>{{  $flyer->street }}</h1>
+            <h2>{{ $flyer->price }}</h2>
             <hr>
             <div class="description">{!! nl2br($flyer->description) !!}</div>
         </div>
@@ -15,6 +15,16 @@
                 <div class="row">
                     @foreach($set as $photo)
                         <div class="col-md-3 gallery_image">
+
+                            <form action="/photos/{{ $photo->id }}" method="post">
+                                {!! csrf_field() !!}
+
+                                <input type="hidden" name="_method" value="DELETE">
+
+                                <button type="submit">Delete Image</button>
+
+                            </form>
+                            
                             <img src="/{{ $photo->thumbnail_path }}" alt="{{ $flyer->street }}">
                         </div>
                     @endforeach
