@@ -20,22 +20,18 @@ class AddPhotoToFlyerTest extends \TestCase
 
         $file->shouldReceive('move')
             ->once()
-            ->with('images/photos', 'nowfoo.jpg'
-            );
+            ->with('images/photos', 'nowfoo.jpg');
 
         $thumbnail = m::mock(Thumbnail::class);
 
         $thumbnail->shouldReceive('make')
             ->once()
-            ->with('images/photos/nowfoo.jpg', 'images/photos/tn-newfoo.jpg');
+            ->with('images/photos/nowfoo.jpg', 'images/photos/tn-nowfoo.jpg');
 
-        $form = new AddPhotoToFlyer($flyer, $file, $thumbnail);
-
-        $form->save();
+        (new AddPhotoToFlyer($flyer, $file, $thumbnail))->save();
 
         $this->assertCount(1, $flyer->photos);
     }
-
 }
 
 function time()
@@ -47,3 +43,4 @@ function sha1($path)
 {
     return $path;
 }
+
