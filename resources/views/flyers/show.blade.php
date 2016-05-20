@@ -4,8 +4,8 @@
 
     <div class="row">
         <div class="col-md-4">
-            <h1>{!!  $flyer->street !!}</h1>
-            <h2>{!! $flyer->price !!}</h2>
+            <h1>{{  $flyer->street }}</h1>
+            <h2>{{ $flyer->price }}</h2>
             <hr>
             <div class="description">{!! nl2br($flyer->description) !!}</div>
         </div>
@@ -15,6 +15,14 @@
                 <div class="row">
                     @foreach($set as $photo)
                         <div class="col-md-3 gallery_image">
+
+                            {!!  link_to('Delete', "/photos/{$photo->id}", 'DELETE') !!}
+
+                            {{--<form action="/photos/{{ $photo->id }}" method="post">--}}
+                            {{--{!! csrf_field() !!}--}}
+                            {{--<input type="hidden" name="_method" value="DELETE">--}}
+                            {{--<button type="submit">Delete Image</button>--}}
+                            {{--</form>--}}
                             <a href="/{{ $photo->path }}" data-lity>
                                 <img src="/{{ $photo->thumbnail_path }}" alt="{{ $flyer->street }}">
                             </a>
@@ -24,9 +32,7 @@
             @endforeach
 
             @if ($user && $user->owns($flyer))
-
                 <hr>
-
                 <form id="addPhotosForm"
                       action="{{ route ('store_photo_path', [$flyer->zip, $flyer->street])}}"
                       method="post"
@@ -34,9 +40,7 @@
                 >
                     {{ csrf_field() }}
                 </form>
-
             @endif
-
         </div>
     </div>
 
